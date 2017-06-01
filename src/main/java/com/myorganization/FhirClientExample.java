@@ -2,7 +2,6 @@ package com.myorganization;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.IGenericClient;
-import ca.uhn.fhir.rest.client.ServerValidationModeEnum;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import org.hl7.fhir.instance.model.Bundle;
@@ -24,9 +23,10 @@ public class FhirClientExample {
 
     private static final FhirContext FHIR_CONTEXT = FhirContext.forDstu2Hl7Org();
     static {
-        // Disable server validation (don't pull the server's metadata first) to allow for interaction with incomplete FHIR servers.
-        FHIR_CONTEXT.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
         /*
+          Could disable server validation (don't pull the server's metadata first) to allow for interaction with FHIR servers that don't have a conformance statement:
+          FHIR_CONTEXT.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
+
           Using a lenient parser (which is the default).
           Could also be even more lenient and not care if there are errors on invalid values,
           but that could lead to a loss of data, so I don't recommend that:
@@ -75,9 +75,9 @@ public class FhirClientExample {
             List<String> messagesFromOperationOutcome = new ArrayList<>();
             for (OperationOutcomeIssueComponent ooic : oo.getIssue()) {
                 String messageForIssue;
-                if (ooic.getDetails().getText() != null) {
+                if (ooic.getDetails().hasText()) {
                     messageForIssue = ooic.getDetails().getText();
-                } else if (ooic.getDiagnostics() != null) {
+                } else if (ooic.hasDiagnostics()) {
                     messageForIssue = ooic.getDiagnostics();
                 } else {
                     messageForIssue = GENERIC_ERROR_MESSAGE;

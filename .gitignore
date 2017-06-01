@@ -12,7 +12,7 @@ buildNumber.properties
 **/.DS_Store
 
 # Ignore IntelliJ files
-idea/
+.idea/
 *.iml
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
