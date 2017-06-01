@@ -54,7 +54,7 @@ public class FhirClientExample {
                     .returnBundle(Bundle.class)
                     .execute();
 
-            LOG.info(String.format("Found %d patients.", results.getEntry().size()));
+            LOG.info(String.format("Found %d patient(s).", results.getEntry().size()));
             // Log the IDs of the patients that were returned.
             for (BundleEntryComponent bec : results.getEntry()) {
                 Patient p = (Patient)bec.getResource();
