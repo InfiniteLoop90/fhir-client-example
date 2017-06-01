@@ -1,6 +1,6 @@
-# fhir-client-example: FHIR Client Example
+# FHIR Client Example
 
-The `fhir-client-example` demonstrates very basic functionality using the HAPI FHIR library to handle the client-side
+This `fhir-client-example` project demonstrates very basic functionality using the HAPI FHIR library to handle the client-side
 to doing a search for patients against a FHIR server, along with some rudimentary error handling.
 
 ## System requirements
