@@ -11,8 +11,7 @@ Maven and JDK 8.
 
 1. Build the Maven project:
 
-    
-    `mvn clean package`
+    mvn clean package
 
 ## Run the search against a FHIR server
 
