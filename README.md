@@ -12,7 +12,7 @@ Maven and JDK 8.
 1. Build the Maven project:
 
     
-    `mvn clean package`
+    mvn clean package
 
 ## Run the search against a FHIR server
 
@@ -22,4 +22,4 @@ Also (optionally), the log4j logging level can be changed from it's default of `
 
 For example, to run it against a FHIR server with a logging level of `DEBUG`, run the following:
 
-    `mvn exec:java -Dexec.args="http://fhirtest.uhn.ca/baseDstu2" -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG`
+    mvn exec:java -Dexec.args="http://fhirtest.uhn.ca/baseDstu2" -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG
