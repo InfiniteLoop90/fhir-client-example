@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.java>1.8</version.java>
-        <version.hapi.fhir>2.4</version.hapi.fhir>
+        <version.hapi.fhir>2.5</version.hapi.fhir>
     </properties>
 
     <dependencies>
