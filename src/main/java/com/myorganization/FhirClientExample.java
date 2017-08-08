@@ -2,6 +2,10 @@ package com.myorganization;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.IGenericClient;
+import ca.uhn.fhir.rest.client.exceptions.FhirClientConnectionException;
+import ca.uhn.fhir.rest.client.exceptions.FhirClientInappropriateForServerException;
+import ca.uhn.fhir.rest.client.exceptions.InvalidResponseException;
+import ca.uhn.fhir.rest.client.exceptions.NonFhirResponseException;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import org.hl7.fhir.instance.model.Bundle;
@@ -57,39 +61,49 @@ public class FhirClientExample {
             LOG.info(String.format("Found %d patient(s).", results.getEntry().size()));
             // Log the IDs of the patients that were returned.
             for (BundleEntryComponent bec : results.getEntry()) {
-                Patient p = (Patient)bec.getResource();
+                Patient p = (Patient) bec.getResource();
                 LOG.info(String.format("ID of found patient is %s", p.getIdElement().getIdPart()));
             }
+        } catch (FhirClientInappropriateForServerException fcifse) {
+            LOG.error("Inappropriate FHIR server!", fcifse);
+        } catch (FhirClientConnectionException fcce) {
+            LOG.error("Failed to correctly communicate with FHIR server!", fcce);
+        } catch (InvalidResponseException ire) {
+            LOG.error("Invalid response!", ire);
+        } catch (NonFhirResponseException nfre) {
+            LOG.error("Non FHIR response!", nfre);
         } catch (BaseServerResponseException bsr) {
-            LOG.error(String.format("A FHIR error occurred!: %s", bsr.getMessage()));
+            LOG.error("A FHIR error occurred!", bsr);
+            if (bsr.getOperationOutcome() != null) {
+                OperationOutcome oo = (OperationOutcome)bsr.getOperationOutcome();
 
-            OperationOutcome oo = (OperationOutcome)bsr.getOperationOutcome();
-
-            /*
-             * For each of the operation outcome's issues, we'll log an error message.
-             * We'll use the first of the following that is defined in each issue:
-             *   OperationOutcome.issue.details.text
-             *   OperationOutcome.issue.diagnostics
-             *   A generic error message
-             */
-            List<String> messagesFromOperationOutcome = new ArrayList<>();
-            for (OperationOutcomeIssueComponent ooic : oo.getIssue()) {
-                String messageForIssue;
-                if (ooic.getDetails().hasText()) {
-                    messageForIssue = ooic.getDetails().getText();
-                } else if (ooic.hasDiagnostics()) {
-                    messageForIssue = ooic.getDiagnostics();
-                } else {
-                    messageForIssue = GENERIC_ERROR_MESSAGE;
+                /*
+                 * For each of the operation outcome's issues, we'll log an error message.
+                 * We'll use the first of the following that is defined in each issue:
+                 *   OperationOutcome.issue.details.text
+                 *   OperationOutcome.issue.diagnostics
+                 *   A generic error message
+                 */
+                List<String> messagesFromOperationOutcome = new ArrayList<>();
+                for (OperationOutcomeIssueComponent ooic : oo.getIssue()) {
+                    String messageForIssue;
+                    if (ooic.getDetails().hasText()) {
+                        messageForIssue = ooic.getDetails().getText();
+                    } else if (ooic.hasDiagnostics()) {
+                        messageForIssue = ooic.getDiagnostics();
+                    } else {
+                        messageForIssue = GENERIC_ERROR_MESSAGE;
+                    }
+                    messagesFromOperationOutcome.add(messageForIssue);
                 }
-                messagesFromOperationOutcome.add(messageForIssue);
-            }
 
-            if (!messagesFromOperationOutcome.isEmpty()) {
-                LOG.error("Here are the error messages from each of the operation outcome issues:");
-                messagesFromOperationOutcome.forEach(LOG::error);
+                if (!messagesFromOperationOutcome.isEmpty()) {
+                    LOG.error("Here are the error messages from each of the operation outcome issues:");
+                    messagesFromOperationOutcome.forEach(LOG::error);
+                }
+            } else {
+                LOG.error("The FHIR server did not return any operation outcome!");
             }
-
         } catch (Exception e) {
             LOG.error("Something really bad happened!", e);
         }
