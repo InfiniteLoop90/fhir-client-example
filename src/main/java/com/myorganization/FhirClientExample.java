@@ -2,10 +2,6 @@ package com.myorganization;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.IGenericClient;
-import ca.uhn.fhir.rest.client.exceptions.FhirClientConnectionException;
-import ca.uhn.fhir.rest.client.exceptions.FhirClientInappropriateForServerException;
-import ca.uhn.fhir.rest.client.exceptions.InvalidResponseException;
-import ca.uhn.fhir.rest.client.exceptions.NonFhirResponseException;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import org.hl7.fhir.instance.model.Bundle;
@@ -15,7 +11,6 @@ import org.hl7.fhir.instance.model.OperationOutcome.OperationOutcomeIssueCompone
 import org.hl7.fhir.instance.model.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,16 +59,41 @@ public class FhirClientExample {
                 Patient p = (Patient) bec.getResource();
                 LOG.info(String.format("ID of found patient is %s", p.getIdElement().getIdPart()));
             }
-        } catch (FhirClientInappropriateForServerException fcifse) {
-            LOG.error("Inappropriate FHIR server!", fcifse);
-        } catch (FhirClientConnectionException fcce) {
-            LOG.error("Failed to correctly communicate with FHIR server!", fcce);
-        } catch (InvalidResponseException ire) {
-            LOG.error("Invalid response!", ire);
-        } catch (NonFhirResponseException nfre) {
-            LOG.error("Non FHIR response!", nfre);
         } catch (BaseServerResponseException bsr) {
+            /*
+              The server can cause exceptions, see http://hapifhir.io/apidocs/ca/uhn/fhir/rest/server/exceptions/package-summary.html
+              The client can also cause exceptions, see http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/exceptions/package-summary.html
+              All of them extend from BaseServerResponseException, but could be handled separately if needed.
+            */
             LOG.error("A FHIR error occurred!", bsr);
+
+            if (bsr.getStatusCode() != 0) {
+                LOG.error("HTTP status code from exception: " + bsr.getStatusCode());
+            } else {
+                LOG.error("The exception did not have an HTTP status code");
+            }
+
+            if (bsr.getResponseMimeType() != null) {
+                LOG.error("Response mime type from the exception: " + bsr.getResponseMimeType());
+            } else {
+                LOG.error("The exception did not have a response mime type");
+            }
+
+            if (bsr.getResponseBody() != null) {
+                LOG.error("Response body from the exception: " + bsr.getResponseBody());
+            } else {
+                LOG.error("The exception did not have a response body");
+            }
+
+            if (bsr.getAdditionalMessages()!= null && !bsr.getAdditionalMessages().isEmpty()) {
+                LOG.error("Additional messages from the exception:");
+                for (String message : bsr.getAdditionalMessages()) {
+                    LOG.error(message);
+                }
+            } else {
+                LOG.error("The response did not have any additional messages");
+            }
+
             if (bsr.getOperationOutcome() != null) {
                 OperationOutcome oo = (OperationOutcome)bsr.getOperationOutcome();
 
@@ -102,7 +122,7 @@ public class FhirClientExample {
                     messagesFromOperationOutcome.forEach(LOG::error);
                 }
             } else {
-                LOG.error("The FHIR server did not return any operation outcome!");
+                LOG.error("The exception did not have any operation outcome");
             }
         } catch (Exception e) {
             LOG.error("Something really bad happened!", e);
