@@ -65,7 +65,7 @@ public class FhirClientExample {
               The client can also cause exceptions, see http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/exceptions/package-summary.html
               All of them extend from BaseServerResponseException, but could be handled separately if needed.
             */
-            LOG.error("A FHIR error occurred!", bsr);
+            LOG.error("A FHIR exception occurred!", bsr);
 
             if (bsr.getStatusCode() != 0) {
                 LOG.error("HTTP status code from exception: " + bsr.getStatusCode());
@@ -85,7 +85,7 @@ public class FhirClientExample {
                 LOG.error("The exception did not have a response body");
             }
 
-            if (bsr.getAdditionalMessages()!= null && !bsr.getAdditionalMessages().isEmpty()) {
+            if (bsr.getAdditionalMessages() != null && !bsr.getAdditionalMessages().isEmpty()) {
                 LOG.error("Additional messages from the exception:");
                 for (String message : bsr.getAdditionalMessages()) {
                     LOG.error(message);
