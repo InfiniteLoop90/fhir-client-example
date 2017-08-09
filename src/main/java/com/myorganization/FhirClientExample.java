@@ -87,11 +87,9 @@ public class FhirClientExample {
 
             if (bsr.getAdditionalMessages() != null && !bsr.getAdditionalMessages().isEmpty()) {
                 LOG.error("Additional messages from the exception:");
-                for (String message : bsr.getAdditionalMessages()) {
-                    LOG.error(message);
-                }
+                bsr.getAdditionalMessages().forEach(LOG::error);
             } else {
-                LOG.error("The response did not have any additional messages");
+                LOG.error("The exception did not have any additional messages");
             }
 
             if (bsr.getOperationOutcome() != null) {
@@ -122,7 +120,7 @@ public class FhirClientExample {
                     messagesFromOperationOutcome.forEach(LOG::error);
                 }
             } else {
-                LOG.error("The exception did not have any operation outcome");
+                LOG.error("The exception did not have an operation outcome");
             }
         } catch (Exception e) {
             LOG.error("Something really bad happened!", e);
