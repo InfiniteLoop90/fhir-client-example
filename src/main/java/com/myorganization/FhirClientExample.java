@@ -2,35 +2,44 @@ package com.myorganization;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.IGenericClient;
+import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
+import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
+
+import com.myorganization.interceptor.AdditionalHttpHeadersInterceptor;
+
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.instance.model.OperationOutcome;
 import org.hl7.fhir.instance.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.instance.model.Patient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Super basic FHIR client example using HAPI FHIR.
+ * Basic FHIR client example using HAPI FHIR.
  */
 public class FhirClientExample {
     private static final Logger LOG = LoggerFactory.getLogger(FhirClientExample.class);
 
     private static final FhirContext FHIR_CONTEXT = FhirContext.forDstu2Hl7Org();
     static {
-        /*
-          Could disable server validation (don't pull the server's metadata first) to allow for interaction with FHIR servers that don't have a conformance statement:
-          FHIR_CONTEXT.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
+        // Could disable server validation (don't pull the server's metadata first) to allow for interaction with FHIR servers that don't have a conformance statement:
+        // FHIR_CONTEXT.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
 
+        /*
           Using a lenient parser (which is the default).
           Could also be even more lenient and not care if there are errors on invalid values,
           but that could lead to a loss of data, so I don't recommend that:
-          FHIR_CONTEXT.setParserErrorHandler(new LenientErrorHandler().setErrorOnInvalidValue(false));
          */
+        // FHIR_CONTEXT.setParserErrorHandler(new LenientErrorHandler().setErrorOnInvalidValue(false));
     }
     private static final String GENERIC_ERROR_MESSAGE = "An unexpected error occurred.";
 
@@ -43,6 +52,44 @@ public class FhirClientExample {
         String baseUrl = args[0];
         LOG.debug(String.format("Base URL is %s", baseUrl));
         IGenericClient client = FHIR_CONTEXT.newRestfulGenericClient(baseUrl);
+
+
+        /*
+          HAPI FHIR allows "interceptors" to be added to do custom changes to the HTTP request right before it is sent
+          and to do special handling of the HTTP response before HAPI FHIR starts unmarshalling to Java class.
+          HAPI FHIR includes a few client interceptors out of the box but custom interceptors can easily be created.
+          More info about how to use client interceptors can be found here:
+            http://hapifhir.io/doc_rest_client_interceptor.html
+          More info about HAPI FHIR's included client interceptors can be found here:
+            http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/interceptor/package-summary.html
+         */
+
+        // Custom interceptor to add some arbitrary additional headers to the request, just for example purposes.
+        AdditionalHttpHeadersInterceptor additionalHttpHeadersInterceptor = new AdditionalHttpHeadersInterceptor();
+        additionalHttpHeadersInterceptor.addHeaderValue("Foo-Header-1", "fooHeaderValue1");
+        additionalHttpHeadersInterceptor.addAllHeaderValues("Foo-Header-2", Stream.of("fooHeaderValue2a", "fooHeaderValue2b").collect(Collectors.toList()));
+
+
+        // HAPI FHIR's BasicAuthInterceptor which can be used to add an HTTP Basic authorization header with the specified username/password, if needed.
+        BasicAuthInterceptor basicAuthInterceptor = new BasicAuthInterceptor("myArbitraryUsername", "myArbitraryPassword");
+
+
+        // HAPI FHIR's LoggingInterceptor, for example, can log a variety of different request and response information.
+        LoggingInterceptor loggingInterceptor = new LoggingInterceptor();
+        loggingInterceptor.setLogger(LOG); // Setting the logger to the logger from this class so that the logging level can be controlled as part of this class.
+        loggingInterceptor.setLogRequestSummary(true);
+        loggingInterceptor.setLogRequestHeaders(true);
+        loggingInterceptor.setLogRequestBody(false);
+        loggingInterceptor.setLogResponseSummary(true);
+        loggingInterceptor.setLogResponseHeaders(false);
+        loggingInterceptor.setLogResponseBody(true);
+
+
+        // Interceptors then have to be registered to the client for them to be used.
+        // Note: Interceptors are executed in the order that they are registered in.
+        client.registerInterceptor(additionalHttpHeadersInterceptor);
+        client.registerInterceptor(basicAuthInterceptor);
+        client.registerInterceptor(loggingInterceptor);
 
         try {
             // Example searching for patients with a specific family name.
@@ -96,11 +143,11 @@ public class FhirClientExample {
                 OperationOutcome oo = (OperationOutcome)bsr.getOperationOutcome();
 
                 /*
-                 * For each of the operation outcome's issues, we'll log an error message.
-                 * We'll use the first of the following that is defined in each issue:
-                 *   OperationOutcome.issue.details.text
-                 *   OperationOutcome.issue.diagnostics
-                 *   A generic error message
+                  For each of the operation outcome's issues, we'll log an error message.
+                  We'll use the first of the following that is defined in each issue:
+                    OperationOutcome.issue.details.text
+                    OperationOutcome.issue.diagnostics
+                    A generic error message
                  */
                 List<String> messagesFromOperationOutcome = new ArrayList<>();
                 for (OperationOutcomeIssueComponent ooic : oo.getIssue()) {

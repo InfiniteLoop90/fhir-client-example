@@ -26,5 +26,5 @@ Also (optionally), the log4j logging level can be changed from it's default of `
 For example, to build the project and run it against a FHIR server with a logging level of `DEBUG`, run the following:
 
 ```
-mvn clean package exec:java -Dexec.args="http://fhirtest.uhn.ca/baseDstu2" -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG
+mvn clean package exec:java -Dexec.args="http://localhost:8080/fhir-server-example/rest" -Dorg.slf4j.simpleLogger.log.com.myorganization=DEBUG
 ```
