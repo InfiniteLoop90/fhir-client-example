@@ -24,7 +24,7 @@ public class AdditionalHttpHeadersInterceptor implements IClientInterceptor {
 
     public AdditionalHttpHeadersInterceptor (Map<String, List<String>> additionalHttpHeaders) {
         super();
-        this.additionalHttpHeaders = Objects.requireNonNull(additionalHttpHeaders, "additionalHttpHeaders cannot be null");;
+        this.additionalHttpHeaders = Objects.requireNonNull(additionalHttpHeaders, "additionalHttpHeaders cannot be null");
     }
 
     /**
