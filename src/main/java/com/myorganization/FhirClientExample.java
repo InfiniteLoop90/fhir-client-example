@@ -55,8 +55,8 @@ public class FhirClientExample {
 
 
         /*
-          HAPI FHIR allows "interceptors" to be added to do custom changes to the HTTP request right before it is sent
-          and to do special handling of the HTTP response before HAPI FHIR starts unmarshalling to Java class.
+          HAPI FHIR allows "interceptors" to be added to do special behaviors to the HTTP request right before it is sent
+          and to do special behaviors to the HTTP response before HAPI FHIR starts processing the response.
           HAPI FHIR includes a few client interceptors out of the box but custom interceptors can easily be created.
           More info about how to use client interceptors can be found here:
             http://hapifhir.io/doc_rest_client_interceptor.html
