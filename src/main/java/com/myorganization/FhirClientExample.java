@@ -4,13 +4,16 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
+import ca.uhn.fhir.rest.gclient.DateClientParam;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
+import ca.uhn.fhir.rest.gclient.TokenClientParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 
 import com.myorganization.interceptor.AdditionalHttpHeadersInterceptor;
 
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.instance.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.instance.model.OperationOutcome;
 import org.hl7.fhir.instance.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.instance.model.Patient;
@@ -92,17 +95,35 @@ public class FhirClientExample {
         client.registerInterceptor(loggingInterceptor);
 
         try {
-            // Example searching for patients with a specific family name.
-            Bundle results = client
+            // Example code showing usages of a handful of specific search parameters. Just showing how to define various search parameters.
+            Bundle verySpecificSearchResultsBundle = client
                     .search()
                     .forResource(Patient.class)
-                    .where(new StringClientParam(Patient.SP_FAMILY).matches().value("reynolds"))
+                    .where(new TokenClientParam(Patient.SP_RES_ID).exactly().code("1018"))
+                    .and(new TokenClientParam(Patient.SP_IDENTIFIER).exactly().code("drghaflgfdlMRN"))
+                    .and(new StringClientParam(Patient.SP_FAMILY).matches().value("Reynolds"))
+                    .and(new StringClientParam(Patient.SP_GIVEN).matches().value("Dennis"))
+                    .and(new DateClientParam(Patient.SP_BIRTHDATE).exactly().day("1976-04-13"))
+                    .and(new TokenClientParam(Patient.SP_GENDER).exactly().code(AdministrativeGender.MALE.toCode()))
+                    .returnBundle(Bundle.class)
+                    .execute();
+            LOG.info(String.format("Found %d total patient(s) in the very specific search and %d patients are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size()));
+            for (BundleEntryComponent bec : verySpecificSearchResultsBundle.getEntry()) {
+                Patient p = (Patient) bec.getResource();
+                LOG.info(String.format("ID of found patient in the very specific search is %s", p.getIdElement().getIdPart()));
+            }
+
+            // Example searching for patients with a specific family name.
+            Bundle searchResults = client
+                    .search()
+                    .forResource(Patient.class)
+                    .where(new StringClientParam(Patient.SP_FAMILY).matches().value("Reynolds"))
                     .returnBundle(Bundle.class)
                     .execute();
 
-            LOG.info(String.format("Found %d patient(s).", results.getEntry().size()));
+            LOG.info(String.format("Found %d patient(s) in the search and %d patients are in this bundle.", searchResults.getTotal(), searchResults.getEntry().size()));
             // Log the IDs of the patients that were returned.
-            for (BundleEntryComponent bec : results.getEntry()) {
+            for (BundleEntryComponent bec : searchResults.getEntry()) {
                 Patient p = (Patient) bec.getResource();
                 LOG.info(String.format("ID of found patient is %s", p.getIdElement().getIdPart()));
             }
