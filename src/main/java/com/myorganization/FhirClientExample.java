@@ -133,7 +133,7 @@ public class FhirClientExample {
               The client can also cause exceptions, see http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/exceptions/package-summary.html
               All of them extend from BaseServerResponseException, but could be handled separately if needed.
             */
-            LOG.error("A FHIR exception occurred!", bsr);
+            LOG.error("A HAPI FHIR exception occurred!", bsr);
 
             if (bsr.getStatusCode() != 0) {
                 LOG.error("HTTP status code from exception: " + bsr.getStatusCode());
