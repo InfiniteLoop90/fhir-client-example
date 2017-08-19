@@ -18,8 +18,7 @@ public class AdditionalHttpHeadersInterceptor implements IClientInterceptor {
     private Map<String, List<String>> additionalHttpHeaders;
 
     public AdditionalHttpHeadersInterceptor () {
-        super();
-        this.additionalHttpHeaders = new HashMap<>();
+        this(new HashMap<>());
     }
 
     public AdditionalHttpHeadersInterceptor (Map<String, List<String>> additionalHttpHeaders) {
