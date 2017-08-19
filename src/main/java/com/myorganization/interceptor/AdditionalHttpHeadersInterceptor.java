@@ -15,7 +15,7 @@ import java.util.Objects;
  * This interceptor adds arbitrary header values to requests made by this client.
  */
 public class AdditionalHttpHeadersInterceptor implements IClientInterceptor {
-    private Map<String, List<String>> additionalHttpHeaders;
+    private final Map<String, List<String>> additionalHttpHeaders = new HashMap<>();
 
     public AdditionalHttpHeadersInterceptor () {
         this(new HashMap<>());
@@ -23,7 +23,9 @@ public class AdditionalHttpHeadersInterceptor implements IClientInterceptor {
 
     public AdditionalHttpHeadersInterceptor (Map<String, List<String>> additionalHttpHeaders) {
         super();
-        this.additionalHttpHeaders = Objects.requireNonNull(additionalHttpHeaders, "additionalHttpHeaders cannot be null");
+        if (additionalHttpHeaders != null) {
+            this.additionalHttpHeaders.putAll(additionalHttpHeaders);
+        }
     }
 
     /**
