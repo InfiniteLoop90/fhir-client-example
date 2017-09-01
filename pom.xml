@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.java>1.8</version.java>
         <version.hapi.fhir>2.5</version.hapi.fhir>
+        <version.org.slf4j>1.7.25</version.org.slf4j>
     </properties>
 
     <dependencies>
@@ -31,8 +32,14 @@
 
         <dependency>
             <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.org.slf4j}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
+            <version>${version.org.slf4j}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
