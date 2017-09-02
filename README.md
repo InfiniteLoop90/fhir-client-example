@@ -1,6 +1,7 @@
 # FHIR Client Example
 
 [![Dependency Status](https://www.versioneye.com/user/projects/593c07060fb24f004fc60166/badge.svg?style=flat)](https://www.versioneye.com/user/projects/593c07060fb24f004fc60166)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.txt)
 
 This `fhir-client-example` project demonstrates very basic functionality using the [HAPI FHIR](http://hapifhir.io/) library to handle the client-side
 to doing a search for patients against a FHIR server, along with some rudimentary error handling.
