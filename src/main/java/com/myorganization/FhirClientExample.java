@@ -46,6 +46,14 @@ public class FhirClientExample {
     }
     private static final String GENERIC_ERROR_MESSAGE = "An unexpected error occurred.";
 
+    // Parameter definitions to be used as part of the search criteria
+    private static final TokenClientParam ID_PARAM = new TokenClientParam(Patient.SP_RES_ID);
+    private static final TokenClientParam IDENTIFIER_PARAM = new TokenClientParam(Patient.SP_IDENTIFIER);
+    private static final StringClientParam FAMILY_PARAM = new StringClientParam(Patient.SP_FAMILY);
+    private static final StringClientParam GIVEN_PARAM = new StringClientParam(Patient.SP_GIVEN);
+    private static final DateClientParam BIRTHDATE_PARAM = new DateClientParam(Patient.SP_BIRTHDATE);
+    private static final TokenClientParam GENDER_PARAM = new TokenClientParam(Patient.SP_GENDER);
+
     public static void main (String[] args) {
         // Getting the base URL from the command line argument.
         if (args.length == 0) {
@@ -99,12 +107,12 @@ public class FhirClientExample {
             Bundle verySpecificSearchResultsBundle = client
                     .search()
                     .forResource(Patient.class)
-                    .where(new TokenClientParam(Patient.SP_RES_ID).exactly().code("1018"))
-                    .and(new TokenClientParam(Patient.SP_IDENTIFIER).exactly().code("drghaflgfdlMRN"))
-                    .and(new StringClientParam(Patient.SP_FAMILY).matches().value("Reynolds"))
-                    .and(new StringClientParam(Patient.SP_GIVEN).matches().value("Dennis"))
-                    .and(new DateClientParam(Patient.SP_BIRTHDATE).exactly().day("1976-04-13"))
-                    .and(new TokenClientParam(Patient.SP_GENDER).exactly().code(AdministrativeGender.MALE.toCode()))
+                    .where(ID_PARAM.exactly().code("1018"))
+                    .and(IDENTIFIER_PARAM.exactly().code("drghaflgfdlMRN"))
+                    .and(FAMILY_PARAM.matches().value("Reynolds"))
+                    .and(GIVEN_PARAM.matches().value("Dennis"))
+                    .and(BIRTHDATE_PARAM.exactly().day("1976-04-13"))
+                    .and(GENDER_PARAM.exactly().code(AdministrativeGender.MALE.toCode()))
                     .returnBundle(Bundle.class)
                     .execute();
             LOG.info(String.format("Found %d total patient(s) in the very specific search and %d patients are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size()));
@@ -117,7 +125,7 @@ public class FhirClientExample {
             Bundle searchResults = client
                     .search()
                     .forResource(Patient.class)
-                    .where(new StringClientParam(Patient.SP_FAMILY).matches().value("Reynolds"))
+                    .where(FAMILY_PARAM.matches().value("Reynolds"))
                     .returnBundle(Bundle.class)
                     .execute();
 
