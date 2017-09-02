@@ -28,3 +28,7 @@ For example, to build the project and run it against a FHIR server with a loggin
 ```
 mvn clean package exec:java -Dexec.args="http://localhost:8080/fhir-server-example/rest" -Dorg.slf4j.simpleLogger.log.com.myorganization=DEBUG
 ```
+
+## License
+
+This FHIR Client Example is licensed under the terms of the [MIT License](LICENSE.txt).
