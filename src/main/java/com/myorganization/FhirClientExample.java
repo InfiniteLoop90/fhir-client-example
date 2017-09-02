@@ -91,7 +91,7 @@ public class FhirClientExample {
         // Interceptors then have to be registered to the client for them to be used.
         // Note: Interceptors are executed in the order that they are registered in.
         client.registerInterceptor(additionalHttpHeadersInterceptor);
-        client.registerInterceptor(basicAuthInterceptor);
+        //client.registerInterceptor(basicAuthInterceptor);  // Commenting out for now so that no authentication info is sent to public test FHIR servers
         client.registerInterceptor(loggingInterceptor);
 
         try {
