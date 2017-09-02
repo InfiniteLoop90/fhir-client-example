@@ -8,6 +8,12 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>FHIR Client Example</name>
     <description>Basic FHIR client example project using HAPI FHIR</description>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
