@@ -31,6 +31,7 @@ import java.util.stream.Stream;
  */
 public class FhirClientExample {
     private static final Logger LOG = LoggerFactory.getLogger(FhirClientExample.class);
+    private static final Logger FHIR_LOG = LoggerFactory.getLogger("FHIRLogger");
 
     private static final FhirContext FHIR_CONTEXT = FhirContext.forDstu2Hl7Org();
     static {
@@ -86,8 +87,9 @@ public class FhirClientExample {
 
 
         // HAPI FHIR's LoggingInterceptor, for example, can log a variety of different request and response information.
+        // Note that (for better or worse) the LoggingInterceptor logs at the INFO level, which is why we'll create a special logger for it since we wouldn't want it to log all the time.
         LoggingInterceptor loggingInterceptor = new LoggingInterceptor();
-        loggingInterceptor.setLogger(LOG); // Setting the logger to the logger from this class so that the logging level can be controlled as part of this class.
+        loggingInterceptor.setLogger(FHIR_LOG); // Setting the logger to a special logger instance so that the logging can be controlled by us.
         loggingInterceptor.setLogRequestSummary(true);
         loggingInterceptor.setLogRequestHeaders(true);
         loggingInterceptor.setLogRequestBody(false);
