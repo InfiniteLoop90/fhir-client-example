@@ -2,7 +2,6 @@ package com.myorganization.util;
 
 import ca.uhn.fhir.rest.client.IGenericClient;
 import org.hl7.fhir.instance.model.Bundle;
-import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Objects;
@@ -35,7 +34,7 @@ public final class BundleFetcher {
     }
 
     /**
-     * Fetches all of the results by iterating through all of the {@value IBaseBundle#LINK_NEXT} links.
+     * Fetches all of the results by iterating through all of the {@value Bundle#LINK_NEXT} links.
      * @return a {@link Bundle} containing all of the resources that matched the search
      */
     public Bundle fetchAll () {
@@ -43,7 +42,7 @@ public final class BundleFetcher {
         Bundle partialBundle = originalBundle;
         LOG.debug(String.format("Original bundle search matched %d total resources(s) in the search and %d resource(s) are in this bundle.", originalBundle.getTotal(), originalBundle.getEntry().size()));
 
-        while (partialBundle.getLink(IBaseBundle.LINK_NEXT) != null) {
+        while (partialBundle.getLink(Bundle.LINK_NEXT) != null) {
             partialBundle = theClient.loadPage().next(partialBundle).execute();
             LOG.debug(String.format("Got the next bundle. This 'next' bundle had %d resources(s) in it.", partialBundle.getEntry().size()));
             aggregatedBundle.getEntry().addAll(partialBundle.getEntry());
