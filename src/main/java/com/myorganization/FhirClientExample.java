@@ -58,8 +58,7 @@ public class FhirClientExample {
     public static void main (String[] args) {
         // Getting the base URL from the command line argument.
         if (args.length == 0) {
-            throw new IllegalStateException("The base URL for the FHIR server must be specified as an argument. " +
-                    "For example: https://fhirtest.uhn.ca/baseDstu2");
+            throw new IllegalStateException("The base URL for the FHIR server must be specified as an argument. For example: https://fhirtest.uhn.ca/baseDstu2");
         }
         String baseUrl = args[0];
         LOG.debug(String.format("Base URL is %s", baseUrl));
@@ -131,7 +130,7 @@ public class FhirClientExample {
                     .returnBundle(Bundle.class)
                     .execute();
             // From that search, there could be pages of results, so let's gather up all of the patients from all of the pages into one bundle
-            Bundle aggregateResultsBundle = BundleFetcher.startingWith(client, firstBundle).fetchAll();
+            Bundle aggregateResultsBundle = new BundleFetcher(client, firstBundle).fetchAll();
 
             LOG.info(String.format("In the end the search matched %d patient(s) and %d patient(s) are in this aggregate bundle.", aggregateResultsBundle.getTotal(), aggregateResultsBundle.getEntry().size()));
             // Log the IDs of the patients that were returned.
