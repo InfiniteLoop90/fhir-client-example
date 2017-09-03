@@ -11,6 +11,7 @@ import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 
 import com.myorganization.interceptor.AdditionalHttpHeadersInterceptor;
 
+import com.myorganization.util.BundleFetcher;
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.instance.model.Enumerations.AdministrativeGender;
@@ -40,9 +41,9 @@ public class FhirClientExample {
         /*
           Using a lenient parser (which is the default).
           Could also be even more lenient and not care if there are errors on invalid values,
-          but that could lead to a loss of data, so I don't recommend that:
+          but that could lead to a loss of data, so take that into consideration:
          */
-        // FHIR_CONTEXT.setParserErrorHandler(new LenientErrorHandler().setErrorOnInvalidValue(false));
+        //FHIR_CONTEXT.setParserErrorHandler(new LenientErrorHandler().setErrorOnInvalidValue(false));
     }
     private static final String GENERIC_ERROR_MESSAGE = "An unexpected error occurred.";
 
@@ -101,7 +102,7 @@ public class FhirClientExample {
         // Note: Interceptors are executed in the order that they are registered in.
         client.registerInterceptor(additionalHttpHeadersInterceptor);
         //client.registerInterceptor(basicAuthInterceptor);  // Commenting out for now so that no authentication info is sent to public test FHIR servers
-        client.registerInterceptor(loggingInterceptor);
+        //client.registerInterceptor(loggingInterceptor);  // Commenting out for now since it can create very verbose output
 
         try {
             // Example code showing usages of a handful of specific search parameters. Just showing how to define various search parameters.
@@ -116,23 +117,25 @@ public class FhirClientExample {
                     .and(GENDER_PARAM.exactly().code(AdministrativeGender.MALE.toCode()))
                     .returnBundle(Bundle.class)
                     .execute();
-            LOG.info(String.format("Found %d total patient(s) in the very specific search and %d patients are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size()));
+            LOG.info(String.format("%d patient(s) matched in the very specific search and %d patient(s) are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size()));
             for (BundleEntryComponent bec : verySpecificSearchResultsBundle.getEntry()) {
                 Patient p = (Patient) bec.getResource();
                 LOG.info(String.format("ID of found patient in the very specific search is %s", p.getIdElement().getIdPart()));
             }
 
             // Example searching for patients with a specific family name.
-            Bundle searchResults = client
+            Bundle firstBundle = client
                     .search()
                     .forResource(Patient.class)
                     .where(FAMILY_PARAM.matches().value("Reynolds"))
                     .returnBundle(Bundle.class)
                     .execute();
+            // From that search, there could be pages of results, so let's gather up all of the patients from all of the pages into one bundle
+            Bundle aggregateResultsBundle = BundleFetcher.startingWith(client, firstBundle).fetchAll();
 
-            LOG.info(String.format("Found %d patient(s) in the search and %d patients are in this bundle.", searchResults.getTotal(), searchResults.getEntry().size()));
+            LOG.info(String.format("In the end the search matched %d patient(s) and %d patient(s) are in this aggregate bundle.", aggregateResultsBundle.getTotal(), aggregateResultsBundle.getEntry().size()));
             // Log the IDs of the patients that were returned.
-            for (BundleEntryComponent bec : searchResults.getEntry()) {
+            for (BundleEntryComponent bec : aggregateResultsBundle.getEntry()) {
                 Patient p = (Patient) bec.getResource();
                 LOG.info(String.format("ID of found patient is %s", p.getIdElement().getIdPart()));
             }
