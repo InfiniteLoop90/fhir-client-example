@@ -114,7 +114,7 @@ public class FhirClientExample {
                     .and(GIVEN_PARAM.matches().value("Dennis"))
                     .and(BIRTHDATE_PARAM.exactly().day("1976-04-13"))
                     .and(GENDER_PARAM.exactly().code(AdministrativeGender.MALE.toCode()))
-                    .encodedJson() // Used to specify that you want a JSON response if you want to enforce that. Otherwise it lists XML first ahead of JSON in the underlying 'Accept' header
+                    //.encodedJson() // Used to specify that you want a JSON response if you want to enforce that. Otherwise by default it lists XML first ahead of JSON in the underlying 'Accept' header
                     .returnBundle(Bundle.class)
                     .execute();
             LOG.info(String.format("%d patient(s) matched in the very specific search and %d patient(s) are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size()));
@@ -128,7 +128,6 @@ public class FhirClientExample {
                     .search()
                     .forResource(Patient.class)
                     .where(FAMILY_PARAM.matches().value("Reynolds"))
-                    .encodedJson()
                     .returnBundle(Bundle.class)
                     .execute();
             // From that search, there could be pages of results, so let's gather up all of the patients from all of the pages into one bundle

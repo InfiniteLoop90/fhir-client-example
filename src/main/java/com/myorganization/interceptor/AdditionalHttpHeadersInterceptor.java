@@ -33,8 +33,9 @@ public class AdditionalHttpHeadersInterceptor implements IClientInterceptor {
      * Note that {@code headerName} and {@code headerValue} cannot be null.
      * @param headerName the name of the header
      * @param headerValue the value to add for the header
+     * @throws NullPointerException if either parameter is {@code null}
      */
-    public void addHeaderValue (String headerName, String headerValue) {
+    public void addHeaderValue (String headerName, String headerValue) throws NullPointerException {
         Objects.requireNonNull(headerName, "headerName cannot be null");
         Objects.requireNonNull(headerValue, "headerValue cannot be null");
 
@@ -46,8 +47,9 @@ public class AdditionalHttpHeadersInterceptor implements IClientInterceptor {
      * Note that {@code headerName} and {@code headerValues} cannot be null.
      * @param headerName the name of the header
      * @param headerValues the list of values to add for the header
+     * @throws NullPointerException if either parameter is {@code null}
      */
-    public void addAllHeaderValues (String headerName, List<String> headerValues) {
+    public void addAllHeaderValues (String headerName, List<String> headerValues) throws NullPointerException {
         Objects.requireNonNull(headerName, "headerName cannot be null");
         Objects.requireNonNull(headerValues, "headerValues cannot be null");
 

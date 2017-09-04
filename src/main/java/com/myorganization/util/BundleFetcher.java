@@ -36,7 +36,8 @@ public class BundleFetcher {
     public Bundle fetchAll () {
         Bundle aggregatedBundle = startingBundle.copy();
         /*
-          This looks to be a bug in HAPI FHIR. Copying a Bundle in the DSTU2 context doesn't copy the IDs of the entry resources,
+          See this issue: https://github.com/jamesagnew/hapi-fhir/issues/724
+          Copying a Bundle in the DSTU2 context doesn't copy the IDs of the entry resources,
           so we'll clear out the entry list and manually add the entries from the starting bundle which will have the IDs.
          */
         aggregatedBundle.getEntry().clear();
