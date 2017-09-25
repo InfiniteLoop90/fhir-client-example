@@ -1,6 +1,6 @@
 package com.myorganization.util;
 
-import ca.uhn.fhir.rest.client.IGenericClient;
+import ca.uhn.fhir.rest.client.api.IGenericClient;
 import org.hl7.fhir.instance.model.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
