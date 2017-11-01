@@ -22,7 +22,7 @@ public class BundleFetcher {
      * @param theStartingBundle the bundle to start with
      * @throws NullPointerException if any of the parameters are {@code null}
      */
-    public BundleFetcher (final IGenericClient theClient, final Bundle theStartingBundle) throws NullPointerException {
+    public BundleFetcher (final IGenericClient theClient, final Bundle theStartingBundle) {
         Objects.requireNonNull(theClient, "theClient cannot be null");
         Objects.requireNonNull(theStartingBundle, "theOriginalBundle cannot be null");
         client = theClient;
