@@ -2,6 +2,7 @@ package com.myorganization;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
+import ca.uhn.fhir.rest.client.interceptor.AdditionalRequestHeadersInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import ca.uhn.fhir.rest.gclient.DateClientParam;
@@ -9,9 +10,8 @@ import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.gclient.TokenClientParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 
-import com.myorganization.interceptor.AdditionalHttpHeadersInterceptor;
-
 import com.myorganization.util.BundleFetcher;
+
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.instance.model.Enumerations.AdministrativeGender;
@@ -75,8 +75,8 @@ public class FhirClientExample {
             http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/interceptor/package-summary.html
          */
 
-        // Custom interceptor to add some arbitrary additional headers to the request, just for example purposes.
-        AdditionalHttpHeadersInterceptor additionalHttpHeadersInterceptor = new AdditionalHttpHeadersInterceptor();
+        // HAPI FHIR's AdditionalRequestHeadersInterceptor which can be used to add some arbitrary additional headers to the request, if needed.
+        AdditionalRequestHeadersInterceptor additionalHttpHeadersInterceptor = new AdditionalRequestHeadersInterceptor();
         additionalHttpHeadersInterceptor.addHeaderValue("Foo-Header-1", "fooHeaderValue1");
         additionalHttpHeadersInterceptor.addAllHeaderValues("Foo-Header-2", Stream.of("fooHeaderValue2a", "fooHeaderValue2b").collect(Collectors.toList()));
 
@@ -87,6 +87,7 @@ public class FhirClientExample {
 
         // HAPI FHIR's LoggingInterceptor, for example, can log a variety of different request and response information.
         // Note that the LoggingInterceptor logs at the INFO level, so only register this logger if you are *sure* you want to log this information.
+        // Maybe a special logger should be created for logging this data in a real application so that it can be specifically enabled/disabled independently.
         LoggingInterceptor loggingInterceptor = new LoggingInterceptor();
         loggingInterceptor.setLogger(LOG); // Setting the logger to this class's logger so that the logging can be controlled by us.
         loggingInterceptor.setLogRequestSummary(true);
