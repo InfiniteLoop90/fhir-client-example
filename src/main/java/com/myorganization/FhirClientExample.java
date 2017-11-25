@@ -40,11 +40,12 @@ public class FhirClientExample {
         // FHIR_CONTEXT.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
 
         /*
-          Using a lenient parser (which is the default).
-          Could also be even more lenient and not care if there are errors on invalid values,
-          but that could lead to a loss of data, so take that into consideration:
+          HAPI FHIR allows you to configure how lenient/strict the parser should be.
+          By default, any invalid values cause a DataFormatException to be thrown.
+          It could be configured to be even more lenient and instead simply log a warning if there are parsing errors
+          involving invalid values, but that could technically lead to a loss of data, so take that into consideration:
          */
-        //FHIR_CONTEXT.setParserErrorHandler(new LenientErrorHandler().setErrorOnInvalidValue(false));
+        // FHIR_CONTEXT.setParserErrorHandler(new LenientErrorHandler().setErrorOnInvalidValue(false));
     }
     private static final String GENERIC_ERROR_MESSAGE = "An unexpected error occurred.";
 
