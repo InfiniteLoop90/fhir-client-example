@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -158,6 +159,17 @@ public class FhirClientExample {
                 LOG.error("Response mime type from the exception: " + bsr.getResponseMimeType());
             } else {
                 LOG.error("The exception did not have a response mime type");
+            }
+
+            if (bsr.hasResponseHeaders()) {
+                LOG.error("Response headers from the exception:");
+                for (Map.Entry<String, List<String>> header : bsr.getResponseHeaders().entrySet()) {
+                    for (String headerValue : header.getValue()) {
+                        LOG.error(String.format("Header: \"%1$s\"   Value: \"%2$s\"", header.getKey(), headerValue));
+                    }
+                }
+            } else {
+                LOG.error("The exception did not have any response headers");
             }
 
             if (bsr.getResponseBody() != null) {
