@@ -35,6 +35,11 @@ public class BundleFetcher {
      */
     public Bundle fetchAll () {
         Bundle aggregatedBundle = startingBundle.copy();
+
+        // Manually copying over all of the Patient entries into the aggregate bundle to avoid potential loss-of-data bugs from the copy() function since Patient information is the most important information of the bundle at this point.
+        aggregatedBundle.getEntry().clear();
+        aggregatedBundle.getEntry().addAll(startingBundle.getEntry());
+
         Bundle partialBundle = startingBundle;
         LOG.debug(String.format("Original bundle search matched %d total resources(s) in the search and %d resource(s) are in this bundle.", startingBundle.getTotal(), startingBundle.getEntry().size()));
 
