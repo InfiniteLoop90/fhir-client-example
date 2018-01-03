@@ -1,6 +1,5 @@
 # FHIR Client Example
 
-[![Dependency Status](https://www.versioneye.com/user/projects/593c07060fb24f004fc60166/badge.svg?style=flat)](https://www.versioneye.com/user/projects/593c07060fb24f004fc60166)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 This `fhir-client-example` project demonstrates very basic functionality using the [HAPI FHIR](http://hapifhir.io/) library
