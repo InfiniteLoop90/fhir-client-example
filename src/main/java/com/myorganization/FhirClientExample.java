@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 /**
  * Basic FHIR client example using HAPI FHIR.
  */
-public class FhirClientExample {
+public final class FhirClientExample {
     private static final Logger LOG = LoggerFactory.getLogger(FhirClientExample.class);
 
     private static final FhirContext FHIR_CONTEXT = FhirContext.forDstu2Hl7Org();
@@ -57,6 +57,15 @@ public class FhirClientExample {
     private static final DateClientParam BIRTHDATE_PARAM = new DateClientParam(Patient.SP_BIRTHDATE);
     private static final TokenClientParam GENDER_PARAM = new TokenClientParam(Patient.SP_GENDER);
 
+    /**
+     * Private constructor to prevent instantiation of this class.
+     */
+    private FhirClientExample () {}
+
+    /**
+     * The main method to run the example code.
+     * @param args command line arguments, which should be the base URL of the FHIR server
+     */
     public static void main (String[] args) {
         // Getting the base URL from the command line argument.
         if (args.length == 0) {

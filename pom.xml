@@ -18,11 +18,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.java>1.8</version.java>
-        <version.hapi.fhir>3.1.0</version.hapi.fhir>
+        <version.hapi.fhir>3.2.0</version.hapi.fhir>
         <version.org.slf4j>1.7.25</version.org.slf4j>
     </properties>
 
     <dependencies>
+        <!-- HAPI FHIR for HL7.org's DSTU2 resource structures and a FHIR client -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-structures-hl7org-dstu2</artifactId>
@@ -42,6 +43,7 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- SLF4J for logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
