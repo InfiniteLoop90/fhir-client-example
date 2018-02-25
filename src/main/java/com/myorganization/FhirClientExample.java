@@ -121,7 +121,7 @@ public final class FhirClientExample {
                     .search()
                     .forResource(Patient.class)
                     .where(ID_PARAM.exactly().code("1018"))
-                    .and(IDENTIFIER_PARAM.exactly().code("drghaflgfdlMRN"))
+                    .and(IDENTIFIER_PARAM.exactly().code("DRGHAFLGFDLMRN"))
                     .and(FAMILY_PARAM.matches().value("Reynolds"))
                     .and(GIVEN_PARAM.matches().value("Dennis"))
                     .and(BIRTHDATE_PARAM.exactly().day("1976-04-13"))
