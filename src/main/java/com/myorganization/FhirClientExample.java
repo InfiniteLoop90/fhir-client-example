@@ -117,6 +117,7 @@ public final class FhirClientExample {
 
         try {
             // Example code showing usages of a handful of specific search parameters. Just showing how to define various search parameters.
+            // GET [base]/Patient?_id=1018&identifier=DRGHAFLGFDLMRN&family=Reynolds&given=Dennis&birthdate=1976-04-13&gender=male
             Bundle verySpecificSearchResultsBundle = client
                     .search()
                     .forResource(Patient.class)
@@ -136,6 +137,7 @@ public final class FhirClientExample {
             }
 
             // Example searching for patients with a specific family name.
+            // GET [base]/Patient?family=Reynolds
             Bundle firstBundle = client
                     .search()
                     .forResource(Patient.class)
