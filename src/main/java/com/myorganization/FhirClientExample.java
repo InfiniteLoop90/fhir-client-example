@@ -69,7 +69,7 @@ public final class FhirClientExample {
     public static void main (String[] args) {
         // Getting the base URL from the command line argument.
         if (args.length == 0) {
-            throw new IllegalStateException("The base URL for the FHIR server must be specified as an argument. For example: https://fhirtest.uhn.ca/baseDstu2");
+            throw new IllegalStateException("The base URL for the FHIR server must be specified as an argument. For example: https://hapi.fhir.org/baseDstu2");
         }
         String baseUrl = args[0];
         LOG.debug(String.format("Base URL is %s", baseUrl));
