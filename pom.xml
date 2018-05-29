@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.java>1.8</version.java>
-        <version.hapi.fhir>3.3.0</version.hapi.fhir>
+        <version.hapi.fhir>3.4.0</version.hapi.fhir>
         <version.org.slf4j>1.7.25</version.org.slf4j>
     </properties>
 
