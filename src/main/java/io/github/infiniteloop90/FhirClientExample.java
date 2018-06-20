@@ -1,4 +1,4 @@
-package com.myorganization;
+package io.github.infiniteloop90;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
@@ -10,7 +10,7 @@ import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.gclient.TokenClientParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 
-import com.myorganization.util.BundleFetcher;
+import io.github.infiniteloop90.util.BundleFetcher;
 
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.Bundle.BundleEntryComponent;

@@ -1,4 +1,4 @@
-package com.myorganization.util;
+package io.github.infiniteloop90.util;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import org.hl7.fhir.instance.model.Bundle;

@@ -75,7 +75,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>com.myorganization.FhirClientExample</mainClass>
+                    <mainClass>io.github.infiniteloop90.FhirClientExample</mainClass>
                 </configuration>
             </plugin>
         </plugins>
