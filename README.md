@@ -2,8 +2,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-This `fhir-client-example` project demonstrates very basic functionality using the [HAPI FHIR](http://hapifhir.io/) library
-to do a search for patients against a FHIR server while using HAPI FHIR interceptors along with some rudimentary error handling.
+This `fhir-client-example` project demonstrates very basic functionality
+using the [HAPI FHIR](http://hapifhir.io/) library to do a search for patients
+against a FHIR server while using HAPI FHIR interceptors along with some
+rudimentary error handling.
 
 ## System requirements
 
@@ -19,16 +21,24 @@ mvn clean package
 
 ## Run the search against a FHIR server
 
-Once the project is built, it can be ran using the Exec Maven plugin (`exec`).
-A FHIR base server URL (e.g., `https://hapi.fhir.org/baseDstu2` or `http://localhost:8080/fhir-server-example/fhir`) must be provided as a command line argument.
-Also (optionally), the log4j logging level can be changed from it's default of `INFO` via the `-Dorg.slf4j.simpleLogger.defaultLogLevel` property.
+Once the project is built, it can be ran using the Exec Maven plugin
+(`exec`).
+A FHIR base server URL (e.g., `https://hapi.fhir.org/baseDstu2` or
+`http://localhost:8080/fhir-server-example/fhir`) must be provided as a
+command line argument. Also (optionally), the log4j logging level can be
+changed from it's default of `INFO` via the
+`-Dorg.slf4j.simpleLogger.defaultLogLevel` property.
 
-For example, to build the project and run it against a FHIR server with a logging level of `DEBUG` for this project's code, run the following:
+For example, to build the project and run it against a FHIR server with a
+logging level of `DEBUG` for this project's code, run the following:
 
 ```
-mvn clean package exec:java -Dexec.args="http://localhost:8080/fhir-server-example/fhir" -Dorg.slf4j.simpleLogger.log.io.github.infiniteloop90=DEBUG
+mvn clean package exec:java
+-Dexec.args="http://localhost:8080/fhir-server-example/fhir"
+-Dorg.slf4j.simpleLogger.log.io.github.infiniteloop90=DEBUG
 ```
 
 ## License
 
-This FHIR Client Example is licensed under the terms of the [MIT License](LICENSE.txt).
+This FHIR Client Example is licensed under the terms of the
+[MIT License](LICENSE.txt).
