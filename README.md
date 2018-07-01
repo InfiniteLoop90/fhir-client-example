@@ -25,7 +25,7 @@ Once the project is built, it can be ran using the Exec Maven plugin
 (`exec`).
 A FHIR base server URL (e.g., `https://hapi.fhir.org/baseDstu2` or
 `http://localhost:8080/fhir-server-example/fhir`) must be provided as a
-command line argument. Also (optionally), the log4j logging level can be
+command line argument. Also (optionally), the logging level can be
 changed from it's default of `INFO` via the
 `-Dorg.slf4j.simpleLogger.defaultLogLevel` property.
 
