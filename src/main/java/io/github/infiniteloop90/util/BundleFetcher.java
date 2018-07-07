@@ -41,18 +41,18 @@ public class BundleFetcher {
         aggregatedBundle.getEntry().addAll(startingBundle.getEntry());
 
         Bundle partialBundle = startingBundle;
-        LOG.debug(String.format("Starting bundle search matched %d total resources(s) in the search and %d resource(s) are in this bundle.", startingBundle.getTotal(), startingBundle.getEntry().size()));
+        LOG.debug("Starting bundle search matched {} total resources(s) in the search and {} resource(s) are in this bundle.", startingBundle.getTotal(), startingBundle.getEntry().size());
 
         // Call the 'next' link on each returned partial bundle and add the patients to the aggregate bundle
         while (partialBundle.getLink(Bundle.LINK_NEXT) != null) {
             partialBundle = client.loadPage().next(partialBundle).execute();
-            LOG.debug(String.format("Got the next bundle. This 'next' bundle had %d resources(s) in it.", partialBundle.getEntry().size()));
+            LOG.debug("Got the next bundle. This 'next' bundle had {} resources(s) in it.", partialBundle.getEntry().size());
             aggregatedBundle.getEntry().addAll(partialBundle.getEntry());
         }
 
         // Just a check to see if counts are off
         if (aggregatedBundle.getTotal() != aggregatedBundle.getEntry().size()) {
-            LOG.error(String.format("Counts didn't match! Expected %d resource(s) but the bundle only had %d resource(s)!", aggregatedBundle.getTotal(), aggregatedBundle.getEntry().size()));
+            LOG.error("Counts didn't match! Expected {} resource(s) but the bundle only had {} resource(s)!", aggregatedBundle.getTotal(), aggregatedBundle.getEntry().size());
         }
 
         // Clear links off of this bundle since they aren't really valid at this point

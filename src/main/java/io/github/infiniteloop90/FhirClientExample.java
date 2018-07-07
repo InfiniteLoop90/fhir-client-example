@@ -72,7 +72,7 @@ public final class FhirClientExample {
             throw new IllegalStateException("The base URL for the FHIR server must be specified as an argument. For example: https://hapi.fhir.org/baseDstu2");
         }
         String baseUrl = args[0];
-        LOG.debug(String.format("Base URL is %s", baseUrl));
+        LOG.debug("Base URL is {}", baseUrl);
         IGenericClient client = FHIR_CONTEXT.newRestfulGenericClient(baseUrl);
 
 
@@ -130,10 +130,10 @@ public final class FhirClientExample {
                     //.encodedJson() // Used to specify that you want a JSON response if you want to enforce that. Otherwise by default it lists XML first ahead of JSON in the underlying 'Accept' header
                     .returnBundle(Bundle.class)
                     .execute();
-            LOG.info(String.format("%d patient(s) matched in the very specific search and %d patient(s) are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size()));
+            LOG.info("{} patient(s) matched in the very specific search and {} patient(s) are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size());
             for (BundleEntryComponent bec : verySpecificSearchResultsBundle.getEntry()) {
                 Patient p = (Patient) bec.getResource();
-                LOG.info(String.format("ID of found patient in the very specific search is %s", p.getIdElement().getIdPart()));
+                LOG.info("ID of found patient in the very specific search is {}", p.getIdElement().getIdPart());
             }
 
             // Example searching for patients with a specific family name.
@@ -147,11 +147,11 @@ public final class FhirClientExample {
             // From that search, there could be pages of results, so let's gather up all of the patients from all of the pages into one bundle
             Bundle aggregateResultsBundle = new BundleFetcher(client, firstBundle).fetchAll();
 
-            LOG.info(String.format("In the end the search matched %d patient(s) and %d patient(s) are in this aggregate bundle.", aggregateResultsBundle.getTotal(), aggregateResultsBundle.getEntry().size()));
+            LOG.info("In the end the search matched {} patient(s) and {} patient(s) are in this aggregate bundle.", aggregateResultsBundle.getTotal(), aggregateResultsBundle.getEntry().size());
             // Log the IDs of the patients that were returned.
             for (BundleEntryComponent bec : aggregateResultsBundle.getEntry()) {
                 Patient p = (Patient) bec.getResource();
-                LOG.info(String.format("ID of found patient is %s", p.getIdElement().getIdPart()));
+                LOG.info("ID of found patient is {}", p.getIdElement().getIdPart());
             }
         } catch (BaseServerResponseException bsr) {
             /*
@@ -162,13 +162,13 @@ public final class FhirClientExample {
             LOG.error("A HAPI FHIR exception occurred!", bsr);
 
             if (bsr.getStatusCode() != 0) {
-                LOG.error("HTTP status code from exception: " + bsr.getStatusCode());
+                LOG.error("HTTP status code from exception: {}", bsr.getStatusCode());
             } else {
                 LOG.error("The exception did not have an HTTP status code");
             }
 
             if (bsr.getResponseMimeType() != null) {
-                LOG.error("Response mime type from the exception: " + bsr.getResponseMimeType());
+                LOG.error("Response mime type from the exception: {}", bsr.getResponseMimeType());
             } else {
                 LOG.error("The exception did not have a response mime type");
             }
@@ -177,7 +177,7 @@ public final class FhirClientExample {
                 LOG.error("Response headers from the exception:");
                 for (Map.Entry<String, List<String>> header : bsr.getResponseHeaders().entrySet()) {
                     for (String headerValue : header.getValue()) {
-                        LOG.error(String.format("Header: \"%1$s\"   Value: \"%2$s\"", header.getKey(), headerValue));
+                        LOG.error("Header: \"{}\"   Value: \"{}\"", header.getKey(), headerValue);
                     }
                 }
             } else {
@@ -185,7 +185,7 @@ public final class FhirClientExample {
             }
 
             if (bsr.getResponseBody() != null) {
-                LOG.error("Response body from the exception: " + bsr.getResponseBody());
+                LOG.error("Response body from the exception: {}", bsr.getResponseBody());
             } else {
                 LOG.error("The exception did not have a response body");
             }
