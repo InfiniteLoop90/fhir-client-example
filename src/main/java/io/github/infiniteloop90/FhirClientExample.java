@@ -36,7 +36,10 @@ public final class FhirClientExample {
 
     private static final FhirContext FHIR_CONTEXT = FhirContext.forDstu2Hl7Org();
     static {
-        // Could disable server validation (don't pull the server's metadata first) to allow for interaction with FHIR servers that don't have a conformance statement:
+        /*
+          Could disable server validation (don't pull the server's metadata first) to allow for interaction with
+          FHIR servers that don't have a conformance statement:
+        */
         // FHIR_CONTEXT.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
 
         /*
@@ -69,7 +72,8 @@ public final class FhirClientExample {
     public static void main (String[] args) {
         // Getting the base URL from the command line argument.
         if (args.length == 0) {
-            throw new IllegalStateException("The base URL for the FHIR server must be specified as an argument. For example: https://hapi.fhir.org/baseDstu2");
+            throw new IllegalStateException("The base URL for the FHIR server must be specified as an argument. " +
+                    "For example: https://hapi.fhir.org/baseDstu2");
         }
         String baseUrl = args[0];
         LOG.debug("Base URL is {}", baseUrl);
@@ -77,8 +81,8 @@ public final class FhirClientExample {
 
 
         /*
-          HAPI FHIR allows "interceptors" to be added to do special behaviors to the HTTP request right before it is sent
-          and to do special behaviors to the HTTP response before HAPI FHIR starts processing the response.
+          HAPI FHIR allows "interceptors" to be added to do special behaviors to the HTTP request right before it is
+          sent and to do special behaviors to the HTTP response before HAPI FHIR starts processing the response.
           HAPI FHIR includes a few client interceptors out of the box but custom interceptors can easily be created.
           More info about how to use client interceptors can be found here:
             http://hapifhir.io/doc_rest_client_interceptor.html
@@ -86,21 +90,36 @@ public final class FhirClientExample {
             http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/interceptor/package-summary.html
          */
 
-        // HAPI FHIR's AdditionalRequestHeadersInterceptor which can be used to add some arbitrary additional headers to the request, if needed.
-        AdditionalRequestHeadersInterceptor additionalHttpHeadersInterceptor = new AdditionalRequestHeadersInterceptor();
+        /*
+          HAPI FHIR's AdditionalRequestHeadersInterceptor which can be used to add some arbitrary additional headers
+          to the request, if needed.
+         */
+        AdditionalRequestHeadersInterceptor additionalHttpHeadersInterceptor =
+                new AdditionalRequestHeadersInterceptor();
         additionalHttpHeadersInterceptor.addHeaderValue("Foo-Header-1", "fooHeaderValue1");
-        additionalHttpHeadersInterceptor.addAllHeaderValues("Foo-Header-2", Stream.of("fooHeaderValue2a", "fooHeaderValue2b").collect(Collectors.toList()));
+        additionalHttpHeadersInterceptor
+                .addAllHeaderValues("Foo-Header-2", Stream.of("fooHeaderValue2a", "fooHeaderValue2b")
+                        .collect(Collectors.toList()));
 
 
-        // HAPI FHIR's BasicAuthInterceptor which can be used to add an HTTP Basic authorization header with the specified username/password, if needed.
-        BasicAuthInterceptor basicAuthInterceptor = new BasicAuthInterceptor("myArbitraryUsername", "myArbitraryPassword");
+        /*
+          HAPI FHIR's BasicAuthInterceptor which can be used to add an HTTP Basic authorization header with the
+          specified username/password, if needed.
+         */
+        BasicAuthInterceptor basicAuthInterceptor =
+                new BasicAuthInterceptor("myArbitraryUsername", "myArbitraryPassword");
 
 
-        // HAPI FHIR's LoggingInterceptor, for example, can log a variety of different request and response information.
-        // Note that the LoggingInterceptor logs at the INFO level, so only register this logger if you are *sure* you want to log this information.
-        // Maybe a special logger should be created for logging this data in a real application so that it can be specifically enabled/disabled independently.
+        /*
+          HAPI FHIR's LoggingInterceptor, for example, can log a variety of different request and response information.
+          Note that the LoggingInterceptor logs at the INFO level, so only register this logger if you are *sure*
+          you want to log this information.
+          Maybe a special logger should be created for logging this data in a real application so that it can be
+          specifically enabled/disabled independently.
+        */
         LoggingInterceptor loggingInterceptor = new LoggingInterceptor();
-        loggingInterceptor.setLogger(LOG); // Setting the logger to this class's logger so that the logging can be controlled by us.
+        // Setting the logger to this class's logger so that the logging can be controlled by us.
+        loggingInterceptor.setLogger(LOG);
         loggingInterceptor.setLogRequestSummary(true);
         loggingInterceptor.setLogRequestHeaders(true);
         loggingInterceptor.setLogRequestBody(false);
@@ -112,12 +131,18 @@ public final class FhirClientExample {
         // Interceptors then have to be registered to the client for them to be used.
         // Note: Interceptors are executed in the order that they are registered in.
         client.registerInterceptor(additionalHttpHeadersInterceptor);
-        //client.registerInterceptor(basicAuthInterceptor);  // Commenting out for now so that no authentication info is sent to public test FHIR servers
-        //client.registerInterceptor(loggingInterceptor);  // Commenting out for now since it can create very verbose output
+        // Commenting out for now so that no authentication info is sent to public test FHIR servers
+        //client.registerInterceptor(basicAuthInterceptor);
+
+        // Commenting out for now since it can create very verbose output
+        //client.registerInterceptor(loggingInterceptor);
 
         try {
-            // Example code showing usages of a handful of specific search parameters. Just showing how to define various search parameters.
-            // GET [base]/Patient?_id=1018&identifier=DRGHAFLGFDLMRN&family=Reynolds&given=Dennis&birthdate=1976-04-13&gender=male
+            /*
+              Example code showing usages of a handful of specific search parameters.
+              Just showing how to define various search parameters.
+              GET [base]/Patient?_id=1018&identifier=DRGHAFLGFDLMRN&family=Reynolds&given=Dennis&birthdate=1976-04-13&gender=male
+            */
             Bundle verySpecificSearchResultsBundle = client
                     .search()
                     .forResource(Patient.class)
@@ -127,10 +152,15 @@ public final class FhirClientExample {
                     .and(GIVEN_PARAM.matches().value("Dennis"))
                     .and(BIRTHDATE_PARAM.exactly().day("1976-04-13"))
                     .and(GENDER_PARAM.exactly().code(AdministrativeGender.MALE.toCode()))
-                    //.encodedJson() // Used to specify that you want a JSON response if you want to enforce that. Otherwise by default it lists XML first ahead of JSON in the underlying 'Accept' header
+                    /*
+                      Used to specify that you want a JSON response if you want to enforce that.
+                      Otherwise by default it lists XML first ahead of JSON in the underlying 'Accept' header
+                     */
+                    //.encodedJson()
                     .returnBundle(Bundle.class)
                     .execute();
-            LOG.info("{} patient(s) matched in the very specific search and {} patient(s) are in this bundle.", verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size());
+            LOG.info("{} patient(s) matched in the very specific search and {} patient(s) are in this bundle.",
+                    verySpecificSearchResultsBundle.getTotal(), verySpecificSearchResultsBundle.getEntry().size());
             for (BundleEntryComponent bec : verySpecificSearchResultsBundle.getEntry()) {
                 Patient p = (Patient) bec.getResource();
                 LOG.info("ID of found patient in the very specific search is {}", p.getIdElement().getIdPart());
@@ -144,10 +174,14 @@ public final class FhirClientExample {
                     .where(FAMILY_PARAM.matches().value("Reynolds"))
                     .returnBundle(Bundle.class)
                     .execute();
-            // From that search, there could be pages of results, so let's gather up all of the patients from all of the pages into one bundle
+            /*
+              From that search, there could be pages of results, so let's gather up all of the patients
+              from all of the pages into one bundle
+             */
             Bundle aggregateResultsBundle = new BundleFetcher(client, firstBundle).fetchAll();
 
-            LOG.info("In the end the search matched {} patient(s) and {} patient(s) are in this aggregate bundle.", aggregateResultsBundle.getTotal(), aggregateResultsBundle.getEntry().size());
+            LOG.info("In the end the search matched {} patient(s) and {} patient(s) are in this aggregate bundle.",
+                    aggregateResultsBundle.getTotal(), aggregateResultsBundle.getEntry().size());
             // Log the IDs of the patients that were returned.
             for (BundleEntryComponent bec : aggregateResultsBundle.getEntry()) {
                 Patient p = (Patient) bec.getResource();
@@ -155,8 +189,12 @@ public final class FhirClientExample {
             }
         } catch (BaseServerResponseException bsr) {
             /*
-              The server can cause exceptions, see http://hapifhir.io/apidocs/ca/uhn/fhir/rest/server/exceptions/package-summary.html
-              The client can also cause exceptions, see http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/exceptions/package-summary.html
+              The server can cause exceptions.
+              See http://hapifhir.io/apidocs/ca/uhn/fhir/rest/server/exceptions/package-summary.html
+
+              The client can also cause exceptions.
+              See http://hapifhir.io/apidocs/ca/uhn/fhir/rest/client/exceptions/package-summary.html
+
               All of them extend from BaseServerResponseException, but could be handled separately if needed.
             */
             LOG.error("A HAPI FHIR exception occurred!", bsr);
