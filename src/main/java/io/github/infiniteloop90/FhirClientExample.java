@@ -172,7 +172,7 @@ public final class FhirClientExample {
             Bundle firstBundle = client
                     .search()
                     .forResource(Patient.class)
-                    .where(FAMILY_PARAM.contains().value("Reynolds"))
+                    .where(FAMILY_PARAM.matchesExactly().value("Reynolds"))
                     .returnBundle(Bundle.class)
                     .execute();
             /*
