@@ -22,7 +22,7 @@
         <version.java>1.8</version.java>
 
         <!-- Dependency versions -->
-        <version.hapi.fhir>3.6.0</version.hapi.fhir>
+        <version.hapi.fhir>3.7.0</version.hapi.fhir>
         <version.org.slf4j>1.7.25</version.org.slf4j>
 
         <!-- Plugin versions -->
