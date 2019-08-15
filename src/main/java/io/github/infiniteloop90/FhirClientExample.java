@@ -12,12 +12,12 @@ import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 
 import io.github.infiniteloop90.util.BundleFetcher;
 
-import org.hl7.fhir.instance.model.Bundle;
-import org.hl7.fhir.instance.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.instance.model.Enumerations.AdministrativeGender;
-import org.hl7.fhir.instance.model.OperationOutcome;
-import org.hl7.fhir.instance.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.instance.model.Patient;
+import org.hl7.fhir.dstu2.model.Bundle;
+import org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender;
+import org.hl7.fhir.dstu2.model.OperationOutcome;
+import org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.dstu2.model.Patient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,8 +154,7 @@ public final class FhirClientExample {
                     .and(BIRTHDATE_PARAM.exactly().day("1976-04-13"))
                     .and(GENDER_PARAM.exactly().code(AdministrativeGender.MALE.toCode()))
                     /*
-                      Used to specify that you want a JSON response if you want to enforce that.
-                      Otherwise by default it lists XML first ahead of JSON in the underlying 'Accept' header
+                      Used to explicitly specify that you want a JSON response if you want to enforce that.
                      */
                     //.encodedJson()
                     .returnBundle(Bundle.class)

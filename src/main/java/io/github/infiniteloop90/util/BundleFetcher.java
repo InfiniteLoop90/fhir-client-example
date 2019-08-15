@@ -1,7 +1,7 @@
 package io.github.infiniteloop90.util;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
-import org.hl7.fhir.instance.model.Bundle;
+import org.hl7.fhir.dstu2.model.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Objects;

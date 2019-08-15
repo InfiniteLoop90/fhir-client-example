@@ -22,7 +22,7 @@
         <version.java>1.8</version.java>
 
         <!-- Dependency versions -->
-        <version.hapi.fhir>3.8.0</version.hapi.fhir>
+        <version.hapi.fhir>4.0.0</version.hapi.fhir>
         <version.org.slf4j>1.7.28</version.org.slf4j>
 
         <!-- Plugin versions -->
@@ -35,6 +35,12 @@
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-structures-hl7org-dstu2</artifactId>
+            <version>${version.hapi.fhir}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.dstu2</artifactId>
             <version>${version.hapi.fhir}</version>
             <scope>compile</scope>
         </dependency>
