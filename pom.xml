@@ -32,10 +32,10 @@
         <version.org.slf4j>1.7.28</version.org.slf4j>
 
         <!-- Plugin versions -->
-        <version.exec.maven.plugin>1.6.0</version.exec.maven.plugin>
-        <version.maven.compiler.plugin>3.8.1</version.maven.compiler.plugin>
-        <version.maven.release.plugin>2.5.3</version.maven.release.plugin>
-        <version.versions.maven.plugin>2.7</version.versions.maven.plugin>
+        <version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
+        <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+        <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
+        <version.versions-maven-plugin>2.7</version.versions-maven-plugin>
     </properties>
 
     <dependencies>
@@ -85,7 +85,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.maven.compiler.plugin}</version>
+                <version>${version.maven-compiler-plugin}</version>
                 <configuration>
                     <source>${version.java}</source>
                     <target>${version.java}</target>
@@ -95,7 +95,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>${version.exec.maven.plugin}</version>
+                <version>${version.exec-maven-plugin}</version>
                 <configuration>
                     <mainClass>io.github.infiniteloop90.FhirClientExample</mainClass>
                 </configuration>
@@ -104,7 +104,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>${version.maven.release.plugin}</version>
+                <version>${version.maven-release-plugin}</version>
                 <configuration>
                     <pushChanges>false</pushChanges>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
@@ -113,7 +113,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>${version.versions.maven.plugin}</version>
+                <version>${version.versions-maven-plugin}</version>
             </plugin>
         </plugins>
     </build>
