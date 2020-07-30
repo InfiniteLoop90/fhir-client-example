@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Java version -->
-        <version.java>1.8</version.java>
+        <version.java>11</version.java>
 
         <!-- Dependency versions -->
         <version.hapi.fhir>4.2.0</version.hapi.fhir>
@@ -90,6 +90,12 @@
                 <configuration>
                     <source>${version.java}</source>
                     <target>${version.java}</target>
+                    <release>${version.java}</release>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                    <compilerArgs>
+                        <arg>-Xlint:all</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
