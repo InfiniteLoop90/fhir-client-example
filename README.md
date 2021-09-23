@@ -9,7 +9,7 @@ rudimentary error handling.
 
 ## System requirements
 
-Maven and JDK 8.
+Maven and JDK 17.
 
 ## How to build
 

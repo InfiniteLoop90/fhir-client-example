@@ -26,7 +26,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Java version -->
-        <version.java>11</version.java>
+        <version.java>17</version.java>
 
         <!-- Dependency versions -->
         <version.hapi.fhir>5.5.1</version.hapi.fhir>
