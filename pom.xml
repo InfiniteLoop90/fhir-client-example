@@ -23,6 +23,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Java version -->
         <version.java>11</version.java>
@@ -32,11 +33,11 @@
         <version.org.slf4j>1.7.30</version.org.slf4j>
 
         <!-- Plugin versions -->
-        <version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
+        <version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
         <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
-        <version.maven-dependency-plugin>3.1.1</version.maven-dependency-plugin>
+        <version.maven-dependency-plugin>3.2.0</version.maven-dependency-plugin>
         <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
-        <version.versions-maven-plugin>2.7</version.versions-maven-plugin>
+        <version.versions-maven-plugin>2.8.1</version.versions-maven-plugin>
     </properties>
 
     <dependencies>
