@@ -29,9 +29,11 @@
         <version.java>17</version.java>
 
         <!-- Dependency versions -->
-        <!-- Keep the HAPI FHIR Core version in sync with what HAPI FHIR defines as it's upgraded -->
-        <version.hapi.fhir>6.0.2</version.hapi.fhir>
-        <version.hapi.fire.core>5.6.36</version.hapi.fire.core>
+        <!-- Keep the HAPI FHIR Core version in sync with what HAPI FHIR defines as it's upgraded by looking
+             at the fhir_core_version property in their root POM for whatever version/tag of the HAPI FHIR project
+             that I'm interested in. -->
+        <version.hapi.fhir>6.4.4</version.hapi.fhir>
+        <version.hapi.fire.core>5.6.971</version.hapi.fire.core>
         <version.org.slf4j>1.7.32</version.org.slf4j>
 
         <!-- Plugin versions -->
